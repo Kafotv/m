@@ -52,7 +52,7 @@
                 الإحصائيات
             </button>
             <button type="button" class="nav-btn" data-tab="suppliers">
-                <i class="fa-solid fa-truck-field"></i>
+                <i class="fa-solid fa-users"></i>
                 الموردين
             </button>
             <button type="button" class="nav-btn" data-tab="delivery">
@@ -481,7 +481,7 @@
             <span>الرئيسية</span>
         </button>
         <button class="nav-item" data-tab="suppliers">
-            <i class="fa-solid fa-truck-field"></i>
+            <i class="fa-solid fa-users"></i>
             <span>الموردين</span>
         </button>
         <!-- Floating Plus in the center -->
@@ -575,6 +575,19 @@
                     </div>
                 </div>
 
+                <!-- Payment Mode Selection (Visible only when supplier selected) -->
+                <div class="form-group" id="payMethodGroup" style="display: none;">
+                    <label for="expPayMethod">طريقة الدفع للمورد</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                        <select id="expPayMethod" class="form-control">
+                            <option value="cash">كاش كامل (مصروف مباشر)</option>
+                            <option value="credit">دين / آجل (دين مستحق للمورد)</option>
+                            <option value="payment">سداد دفعة (سداد جزء من الدين)</option>
+                        </select>
+                    </div>
+                </div>
+
                 <!-- Collection Mode Selection (Visible only when delivery company selected for income) -->
                 <div class="form-group" id="collectMethodGroup" style="display: none;">
                     <label for="expCollectMethod">حالة الاستلام من شركة التوصيل</label>
@@ -587,7 +600,7 @@
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 200px; gap: 0.75rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
                     <div class="form-group">
                         <label for="expAmount">المبلغ</label>
                         <div class="input-icon-wrapper">

@@ -143,7 +143,7 @@ function startRealtimeSync() {
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible' && window.supabaseClient) syncWithSupabaseBackground();
     });
-    window._syncInterval = setInterval(() => { if (window.supabaseClient) syncWithSupabaseBackground(); }, 30000);
+    window._syncInterval = setInterval(() => { if (window.supabaseClient) syncWithSupabaseBackground(); }, 10000);
 }
 
 function stopRealtimeSync() {
