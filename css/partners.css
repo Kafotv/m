@@ -5,6 +5,10 @@
     gap: 1rem; margin-top: 1.5rem;
 }
 
+@media (min-width: 900px) {
+    .suppliers-grid { grid-template-columns: repeat(5, 1fr); }
+}
+
 .supplier-card {
     display: flex; flex-direction: column; gap: 0.75rem;
     padding: 1rem; background: var(--bg-card); border-radius: 16px;
