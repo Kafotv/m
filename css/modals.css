@@ -1,6 +1,6 @@
 .tx-modal-overlay {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: #000;
+    background: rgba(0,0,0,0.5);
     display: flex; opacity: 0; pointer-events: none;
     justify-content: center; align-items: flex-end;
     z-index: 1500; transition: opacity 0.2s ease;
@@ -27,7 +27,7 @@
 
 .modal-overlay {
     position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: #000;
+    background: rgba(0,0,0,0.5);
     display: flex; opacity: 0; pointer-events: none;
     justify-content: center; align-items: center;
     z-index: 2000; padding: 1rem; transition: opacity 0.2s ease;
