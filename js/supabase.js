@@ -139,15 +139,15 @@ async function syncWithSupabaseBackground() {
 }
 
 function startRealtimeSync() {
-    if (syncInterval) clearInterval(syncInterval);
+    if (window._syncInterval) clearInterval(window._syncInterval);
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible' && window.supabaseClient) syncWithSupabaseBackground();
     });
-    syncInterval = setInterval(() => { if (window.supabaseClient) syncWithSupabaseBackground(); }, 30000);
+    window._syncInterval = setInterval(() => { if (window.supabaseClient) syncWithSupabaseBackground(); }, 30000);
 }
 
 function stopRealtimeSync() {
-    if (syncInterval) { clearInterval(syncInterval); syncInterval = null; }
+    if (window._syncInterval) { clearInterval(window._syncInterval); window._syncInterval = null; }
 }
 
 async function loadState() {
