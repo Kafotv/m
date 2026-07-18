@@ -11,7 +11,7 @@
 :root {
     --bg-app: #f4f7f6;
     --bg-card: rgba(255,255,255,0.85);
-    --border-card: rgba(255,255,255,0.4);
+    --border-card: rgba(0,0,0,0.1);
     --text-primary: #1e293b;
     --text-secondary: #64748b;
     --primary: #4f46e5;
@@ -35,7 +35,7 @@
 [data-theme="dark"] {
     --bg-app: #0f172a;
     --bg-card: rgba(30,41,59,0.7);
-    --border-card: rgba(255,255,255,0.05);
+    --border-card: rgba(255,255,255,0.12);
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --primary: #6366f1;
