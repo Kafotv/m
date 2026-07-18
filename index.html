@@ -548,40 +548,30 @@
                         <button type="button" class="picker-btn picker-btn-below" onclick="openPickerModal('category')" title="اختيار من البطاقات"><i class="fa-solid fa-grip"></i> اختيار من البطاقات</button>
                     </div>
 
-                    <!-- Supplier Relation Selection (visible for expenses) -->
-                    <div class="form-group" id="supplierRelationGroup">
-                        <label for="expSupplier">المورد (اختياري)</label>
-                        <div class="input-icon-wrapper">
-                            <i class="fa-solid fa-user-tie"></i>
-                            <select id="expSupplier" class="form-control">
-                                <option value="">-- بدون مورد --</option>
-                            </select>
+                    <div>
+                        <!-- Supplier Relation Selection (visible for expenses) -->
+                        <div class="form-group" id="supplierRelationGroup">
+                            <label for="expSupplier">المورد (اختياري)</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-user-tie"></i>
+                                <select id="expSupplier" class="form-control">
+                                    <option value="">-- بدون مورد --</option>
+                                </select>
+                            </div>
+                            <button type="button" class="picker-btn picker-btn-below" onclick="openPickerModal('supplier')" title="اختيار من البطاقات"><i class="fa-solid fa-grip"></i> اختيار من البطاقات</button>
                         </div>
-                        <button type="button" class="picker-btn picker-btn-below" onclick="openPickerModal('supplier')" title="اختيار من البطاقات"><i class="fa-solid fa-grip"></i> اختيار من البطاقات</button>
-                    </div>
-                </div>
 
-                <!-- Payment Mode Selection (Visible only when supplier selected) -->
-                <div class="form-group" id="payMethodGroup" style="display: none;">
-                    <label for="expPayMethod">طريقة الدفع للمورد</label>
-                    <div class="input-icon-wrapper">
-                        <i class="fa-solid fa-money-bill-transfer"></i>
-                        <select id="expPayMethod" class="form-control">
-                            <option value="cash">كاش كامل (مصروف مباشر)</option>
-                            <option value="credit">دين / آجل (دين مستحق للمورد)</option>
-                            <option value="payment">سداد دفعة (سداد جزء من الدين)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Delivery Company Relation Selection (visible for incomes) -->
-                <div class="form-group" id="deliveryRelationGroup" style="display: none;">
-                    <label for="expDelivery">شركة التوصيل (اختياري)</label>
-                    <div class="input-icon-wrapper">
-                        <i class="fa-solid fa-truck-fast"></i>
-                        <select id="expDelivery" class="form-control">
-                            <option value="">-- بدون شركة توصيل --</option>
-                        </select>
+                        <!-- Delivery Company Relation Selection (visible for incomes) -->
+                        <div class="form-group" id="deliveryRelationGroup" style="display: none;">
+                            <label for="expDelivery">شركة التوصيل (اختياري)</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-truck-fast"></i>
+                                <select id="expDelivery" class="form-control">
+                                    <option value="">-- بدون شركة توصيل --</option>
+                                </select>
+                            </div>
+                            <button type="button" class="picker-btn picker-btn-below" onclick="openPickerModal('delivery')" title="اختيار من البطاقات"><i class="fa-solid fa-grip"></i> اختيار من البطاقات</button>
+                        </div>
                     </div>
                 </div>
 

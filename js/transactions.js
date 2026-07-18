@@ -217,11 +217,17 @@ window.openPickerModal = function(type) {
     const modal = document.getElementById('pickerModal');
     const title = document.getElementById('pickerModalTitle');
     const body = document.getElementById('pickerModalBody');
+    document.getElementById('pickerSearchInput').value = '';
     if (type === 'supplier') {
         title.innerHTML = '<i class="fa-solid fa-user-tie" style="color:var(--primary); margin-left:0.5rem;"></i> اختر المورد';
         body.innerHTML = state.suppliers.length === 0
             ? '<div style="grid-column:1/-1; text-align:center; color:var(--text-secondary); padding:2rem;">لا يوجد موردين</div>'
             : state.suppliers.map(sup => `<div class="picker-item" onclick="selectPickerItem('${sup.id}','supplier')"><div class="picker-item-avatar">${escapeHtml(sup.name.charAt(0))}</div><div class="picker-item-name">${escapeHtml(sup.name)}${sup.phone ? '<br><span class="picker-item-phone">' + escapeHtml(sup.phone) + '</span>' : ''}</div></div>`).join('');
+    } else if (type === 'delivery') {
+        title.innerHTML = '<i class="fa-solid fa-truck-fast" style="color:var(--primary); margin-left:0.5rem;"></i> اختر شركة التوصيل';
+        body.innerHTML = state.deliveryCompanies.length === 0
+            ? '<div style="grid-column:1/-1; text-align:center; color:var(--text-secondary); padding:2rem;">لا يوجد شركات توصيل</div>'
+            : state.deliveryCompanies.map(del => `<div class="picker-item" onclick="selectPickerItem('${del.id}','delivery')"><div class="picker-item-avatar" style="background:linear-gradient(135deg,var(--success),var(--info));">${escapeHtml(del.name.charAt(0))}</div><div class="picker-item-name">${escapeHtml(del.name)}${del.phone ? '<br><span class="picker-item-phone">' + escapeHtml(del.phone) + '</span>' : ''}</div></div>`).join('');
     } else {
         title.innerHTML = '<i class="fa-solid fa-tags" style="color:var(--primary); margin-left:0.5rem;"></i> اختر التصنيف';
         body.innerHTML = state.categories.map(cat => `<div class="picker-item" onclick="selectPickerItem('${cat.id}','category')"><div class="picker-item-dot" style="background:${cat.color}"></div><div class="picker-item-name">${escapeHtml(cat.label)}</div></div>`).join('');
@@ -241,6 +247,7 @@ window.filterPickerItems = function(query) {
 
 window.selectPickerItem = function(id, type) {
     if (type === 'supplier') { expSupplier.value = id; expSupplier.dispatchEvent(new Event('change', { bubbles: true })); }
+    else if (type === 'delivery') { expDelivery.value = id; expDelivery.dispatchEvent(new Event('change', { bubbles: true })); }
     else expCategory.value = id;
     closePickerModal();
 };
