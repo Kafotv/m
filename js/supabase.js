@@ -23,13 +23,16 @@ function initSupabase() {
                 if (disconnectBtn) disconnectBtn.style.display = 'inline-flex';
                 if (inputUrl) inputUrl.value = url;
                 if (inputKey) inputKey.value = key;
+                startRealtimeSync();
             } else { throw new Error('Supabase SDK not loaded'); }
         } catch (e) {
             console.error('Failed to init Supabase:', e);
+            stopRealtimeSync();
             if (statusEl) { statusEl.className = 'tools-badge'; statusEl.style.background = 'var(--danger-light)'; statusEl.style.color = 'var(--danger)'; statusEl.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> فشل الاتصال بالسحاب`; }
         }
     } else {
         window.supabaseClient = null;
+        stopRealtimeSync();
         if (statusEl) { statusEl.className = 'tools-badge'; statusEl.style.background = 'rgba(100,116,139,0.15)'; statusEl.style.color = 'var(--text-secondary)'; statusEl.innerHTML = `<i class="fa-solid fa-circle-question"></i> غير متصل بالسحاب (يعمل محلياً فقط)`; }
         if (syncContainer) syncContainer.style.display = 'none';
         if (disconnectBtn) disconnectBtn.style.display = 'none';
@@ -57,6 +60,7 @@ function setupSupabaseConfig() {
                 showCustomAlert('تم الاتصال بقاعدة بيانات Supabase بنجاح!', 'success');
                 initSupabase();
                 await loadState();
+                startRealtimeSync();
                 render();
             } catch (err) {
                 console.error('Connection test failed:', err);
@@ -71,7 +75,7 @@ function setupSupabaseConfig() {
                 iconClass: 'fa-solid fa-link-slash', iconColor: 'var(--warning)',
                 onConfirm: async () => {
                     localStorage.removeItem('project_expenses_supabase_url'); localStorage.removeItem('project_expenses_supabase_key');
-                    initSupabase(); await loadState(); render();
+                    stopRealtimeSync(); initSupabase(); await loadState(); render();
                     showCustomAlert('تم قطع الاتصال والتحويل للتخزين المحلي بنجاح.', 'success');
                 }
             });
@@ -119,6 +123,18 @@ async function syncWithSupabaseBackground() {
         }
         render();
     } catch (e) { console.error('Background Supabase sync failed:', e); }
+}
+
+function startRealtimeSync() {
+    if (syncInterval) clearInterval(syncInterval);
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible' && window.supabaseClient) syncWithSupabaseBackground();
+    });
+    syncInterval = setInterval(() => { if (window.supabaseClient) syncWithSupabaseBackground(); }, 30000);
+}
+
+function stopRealtimeSync() {
+    if (syncInterval) { clearInterval(syncInterval); syncInterval = null; }
 }
 
 async function loadState() {
