@@ -144,39 +144,31 @@ function dbToExpense(row) {
 
 async function saveSuppliers() {
     localStorage.setItem('project_expenses_suppliers', JSON.stringify(state.suppliers));
-    if (!window.supabaseClient) return;
-    for (const sup of state.suppliers) {
-        const { error } = await window.supabaseClient.from('suppliers').upsert({ id: sup.id, name: sup.name, phone: sup.phone || null });
-        if (error) { showSupabaseError('saveSuppliers', error); return; }
-    }
+    if (!window.supabaseClient || state.suppliers.length === 0) return;
+    const { error } = await window.supabaseClient.from('suppliers').upsert(state.suppliers);
+    if (error) showSupabaseError('saveSuppliers', error);
 }
 
 async function saveDeliveryCompanies() {
     localStorage.setItem('project_expenses_delivery_companies', JSON.stringify(state.deliveryCompanies));
-    if (!window.supabaseClient) return;
-    for (const del of state.deliveryCompanies) {
-        const { error } = await window.supabaseClient.from('delivery_companies').upsert({ id: del.id, name: del.name, phone: del.phone || null });
-        if (error) { showSupabaseError('saveDeliveryCompanies', error); return; }
-    }
+    if (!window.supabaseClient || state.deliveryCompanies.length === 0) return;
+    const { error } = await window.supabaseClient.from('delivery_companies').upsert(state.deliveryCompanies);
+    if (error) showSupabaseError('saveDeliveryCompanies', error);
 }
 
 async function saveCategories() {
     localStorage.setItem('project_expenses_categories', JSON.stringify(state.categories));
-    if (!window.supabaseClient) return;
-    for (const cat of state.categories) {
-        const { error } = await window.supabaseClient.from('categories').upsert({ id: cat.id, label: cat.label, color: cat.color });
-        if (error) { showSupabaseError('saveCategories', error); return; }
-    }
+    if (!window.supabaseClient || state.categories.length === 0) return;
+    const { error } = await window.supabaseClient.from('categories').upsert(state.categories);
+    if (error) showSupabaseError('saveCategories', error);
 }
 
 async function saveState() {
     localStorage.setItem('project_expenses_multi_currency_v2', JSON.stringify(state.expenses));
     if (!window.supabaseClient) return;
     const dbRows = state.expenses.map(expenseToDb);
-    for (const row of dbRows) {
-        const { error } = await window.supabaseClient.from('expenses').upsert(row);
-        if (error) { showSupabaseError('saveState/expenses', error); return; }
-    }
+    const { error } = await window.supabaseClient.from('expenses').upsert(dbRows);
+    if (error) showSupabaseError('saveState/expenses', error);
 }
 
 function showSupabaseError(operation, err) {

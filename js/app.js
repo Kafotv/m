@@ -77,9 +77,10 @@ function render() {
     renderChartDynamic(categoryTotals);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     expDate.value = new Date().toISOString().split('T')[0];
-    loadStateLocal();
+    initSupabase();
+    await loadState();
     initTheme();
     setupFormTypeToggles();
     setupNavigation();
@@ -112,6 +113,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     render();
-    initSupabase();
-    syncWithSupabaseBackground();
 });

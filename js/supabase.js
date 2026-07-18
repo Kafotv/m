@@ -102,27 +102,40 @@ function setupSupabaseConfig() {
     }
 }
 
-async function syncWithSupabaseBackground() {
+async function syncFromCloud() {
+    if (!window.supabaseClient) return false;
+    try {
+        const [catsRes, supsRes, delsRes, expsRes] = await Promise.all([
+            window.supabaseClient.from('categories').select('*'),
+            window.supabaseClient.from('suppliers').select('*'),
+            window.supabaseClient.from('delivery_companies').select('*'),
+            window.supabaseClient.from('expenses').select('*').order('date', { ascending: false })
+        ]);
+        if (!catsRes.error && catsRes.data && catsRes.data.length > 0) { state.categories = catsRes.data; localStorage.setItem('project_expenses_categories', JSON.stringify(catsRes.data)); }
+        if (!supsRes.error && supsRes.data && supsRes.data.length > 0) { state.suppliers = supsRes.data; localStorage.setItem('project_expenses_suppliers', JSON.stringify(supsRes.data)); }
+        if (!delsRes.error && delsRes.data && delsRes.data.length > 0) { state.deliveryCompanies = delsRes.data; localStorage.setItem('project_expenses_delivery_companies', JSON.stringify(delsRes.data)); }
+        if (!expsRes.error && expsRes.data && expsRes.data.length > 0) { state.expenses = expsRes.data.map(dbToExpense); localStorage.setItem('project_expenses_multi_currency_v2', JSON.stringify(state.expenses)); }
+        return true;
+    } catch (e) { console.error('syncFromCloud failed:', e); return false; }
+}
+
+async function syncToCloud() {
     if (!window.supabaseClient) return;
     try {
-        const { data: cats, error: catErr } = await window.supabaseClient.from('categories').select('*');
-        const { data: sups, error: supErr } = await window.supabaseClient.from('suppliers').select('*');
-        const { data: dels, error: delErr } = await window.supabaseClient.from('delivery_companies').select('*');
-        const { data: exps, error: expErr } = await window.supabaseClient.from('expenses').select('*').order('date', { ascending: false });
-        const hasCloudData = (cats && cats.length > 0) || (sups && sups.length > 0) || (dels && dels.length > 0) || (exps && exps.length > 0);
-        if (hasCloudData) {
-            if (!catErr && cats && cats.length > 0) { state.categories = cats; localStorage.setItem('project_expenses_categories', JSON.stringify(cats)); }
-            if (!supErr && sups && sups.length > 0) { state.suppliers = sups; localStorage.setItem('project_expenses_suppliers', JSON.stringify(sups)); }
-            if (!delErr && dels && dels.length > 0) { state.deliveryCompanies = dels; localStorage.setItem('project_expenses_delivery_companies', JSON.stringify(dels)); }
-            if (!expErr && exps && exps.length > 0) { state.expenses = exps.map(dbToExpense); localStorage.setItem('project_expenses_multi_currency_v2', JSON.stringify(state.expenses)); }
-        } else {
-            if (state.categories.length > 0) { for (const cat of state.categories) { await window.supabaseClient.from('categories').upsert({ id: cat.id, label: cat.label, color: cat.color }); } }
-            if (state.suppliers.length > 0) { for (const sup of state.suppliers) { await window.supabaseClient.from('suppliers').upsert({ id: sup.id, name: sup.name, phone: sup.phone || null }); } }
-            if (state.deliveryCompanies.length > 0) { for (const del of state.deliveryCompanies) { await window.supabaseClient.from('delivery_companies').upsert({ id: del.id, name: del.name, phone: del.phone || null }); } }
-            if (state.expenses.length > 0) { const dbRows = state.expenses.map(expenseToDb); for (const row of dbRows) { await window.supabaseClient.from('expenses').upsert(row); } }
-        }
-        render();
-    } catch (e) { console.error('Background Supabase sync failed:', e); }
+        const errors = await Promise.all([
+            state.categories.length > 0 ? window.supabaseClient.from('categories').upsert(state.categories).then(r => r.error).catch(e => { console.error(e); return e; }) : null,
+            state.suppliers.length > 0 ? window.supabaseClient.from('suppliers').upsert(state.suppliers).then(r => r.error).catch(e => { console.error(e); return e; }) : null,
+            state.deliveryCompanies.length > 0 ? window.supabaseClient.from('delivery_companies').upsert(state.deliveryCompanies).then(r => r.error).catch(e => { console.error(e); return e; }) : null,
+            state.expenses.length > 0 ? window.supabaseClient.from('expenses').upsert(state.expenses.map(expenseToDb)).then(r => r.error).catch(e => { console.error(e); return e; }) : null
+        ]);
+        errors.filter(e => e).forEach(e => console.error('syncToCloud error:', e));
+    } catch (e) { console.error('syncToCloud failed:', e); }
+}
+
+async function syncWithSupabaseBackground() {
+    const ok = await syncFromCloud();
+    if (!ok) await syncToCloud();
+    render();
 }
 
 function startRealtimeSync() {
@@ -148,23 +161,6 @@ async function loadState() {
     if (savedCat) { try { state.categories = JSON.parse(savedCat); } catch(e) { state.categories = DEFAULT_CATEGORIES; } }
     else { state.categories = DEFAULT_CATEGORIES; }
     if (!window.supabaseClient) return;
-    try {
-        const { data: cats, error: catErr } = await window.supabaseClient.from('categories').select('*');
-        const { data: sups, error: supErr } = await window.supabaseClient.from('suppliers').select('*');
-        const { data: dels, error: delErr } = await window.supabaseClient.from('delivery_companies').select('*');
-        const { data: exps, error: expErr } = await window.supabaseClient.from('expenses').select('*').order('date', { ascending: false });
-        const hasCloudData = (cats && cats.length > 0) || (sups && sups.length > 0) || (dels && dels.length > 0) || (exps && exps.length > 0);
-        if (hasCloudData) {
-            if (!catErr && cats && cats.length > 0) { state.categories = cats; localStorage.setItem('project_expenses_categories', JSON.stringify(cats)); }
-            if (!supErr && sups && sups.length > 0) { state.suppliers = sups; localStorage.setItem('project_expenses_suppliers', JSON.stringify(sups)); }
-            if (!delErr && dels && dels.length > 0) { state.deliveryCompanies = dels; localStorage.setItem('project_expenses_delivery_companies', JSON.stringify(dels)); }
-            if (!expErr && exps && exps.length > 0) { state.expenses = exps.map(dbToExpense); localStorage.setItem('project_expenses_multi_currency_v2', JSON.stringify(state.expenses)); }
-        } else if (!catErr && !supErr && !delErr && !expErr) {
-            if (state.categories.length > 0) { for (const cat of state.categories) { await window.supabaseClient.from('categories').upsert({ id: cat.id, label: cat.label, color: cat.color }); } }
-            else { for (const cat of DEFAULT_CATEGORIES) { await window.supabaseClient.from('categories').upsert({ id: cat.id, label: cat.label, color: cat.color }); } state.categories = DEFAULT_CATEGORIES; }
-            if (state.suppliers.length > 0) { for (const sup of state.suppliers) { await window.supabaseClient.from('suppliers').upsert({ id: sup.id, name: sup.name, phone: sup.phone || null }); } }
-            if (state.deliveryCompanies.length > 0) { for (const del of state.deliveryCompanies) { await window.supabaseClient.from('delivery_companies').upsert({ id: del.id, name: del.name, phone: del.phone || null }); } }
-            if (state.expenses.length > 0) { const dbRows = state.expenses.map(expenseToDb); for (const row of dbRows) { await window.supabaseClient.from('expenses').upsert(row); } }
-        }
-    } catch (e) { console.error('Supabase loadState failed, using localStorage cache:', e); }
+    const ok = await syncFromCloud();
+    if (!ok) await syncToCloud();
 }
