@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 10px; transition: all 0.3s ease; }
+[data-theme="dark"] ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+* { scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.12) transparent; }
+[data-theme="dark"] * { scrollbar-color: rgba(255,255,255,0.08) transparent; }
+
+:root {
+    --bg-app: #f4f7f6;
+    --bg-card: rgba(255,255,255,0.85);
+    --border-card: rgba(255,255,255,0.4);
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --primary-light: rgba(79,70,229,0.1);
+    --success: #10b981;
+    --success-light: rgba(16,185,129,0.1);
+    --danger: #ef4444;
+    --danger-light: rgba(239,68,68,0.1);
+    --warning: #f59e0b;
+    --warning-light: rgba(245,158,11,0.1);
+    --info: #06b6d4;
+    --info-light: rgba(6,182,212,0.1);
+    --shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+    --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    --radius: 16px;
+    --font: 'Tajawal', sans-serif;
+    --bottom-nav-height: 0px;
+}
+
+[data-theme="dark"] {
+    --bg-app: #0f172a;
+    --bg-card: rgba(30,41,59,0.7);
+    --border-card: rgba(255,255,255,0.05);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --primary-light: rgba(99,102,241,0.15);
+    --shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font); }
+
+body {
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    min-height: 100vh;
+    direction: rtl;
+    transition: var(--transition);
+    background-image: radial-gradient(at 0% 0%, var(--primary-light) 0px, transparent 50%),
+                      radial-gradient(at 100% 100%, var(--info-light) 0px, transparent 50%);
+    background-attachment: fixed;
+    padding-bottom: calc(2rem + var(--bottom-nav-height));
+}
