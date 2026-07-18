@@ -16,8 +16,8 @@ header {
 
 .desktop-nav {
     display: flex; gap: 0.35rem;
-    background: var(--bg-card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    padding: 4px; border-radius: 30px; border: 1px solid var(--border-card); box-shadow: var(--shadow);
+    background: var(--bg-card);
+    padding: 4px; border-radius: 30px; border: 1px solid var(--border-card); box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
 .nav-btn {
@@ -40,13 +40,12 @@ main {
 }
 
 .card {
-    background: var(--bg-card); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    background: var(--bg-card);
     border: 1px solid var(--border-card); border-radius: var(--radius);
-    padding: 1.5rem; box-shadow: var(--shadow);
-    transition: transform 0.18s cubic-bezier(0.22,1,0.36,1), box-shadow 0.18s ease;
-    will-change: transform; contain: layout style;
+    padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.card:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.12); }
+.card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -8px rgba(0,0,0,0.1); }
 
 .wallet-card {
     display: flex; flex-direction: column; gap: 1.25rem;
