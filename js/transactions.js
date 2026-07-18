@@ -231,6 +231,14 @@ window.openPickerModal = function(type) {
 
 window.closePickerModal = function() { document.getElementById('pickerModal').classList.remove('active'); };
 
+window.filterPickerItems = function(query) {
+    const items = document.querySelectorAll('#pickerModalBody .picker-item');
+    const q = query.toLowerCase().trim();
+    items.forEach(item => {
+        item.style.display = !q || item.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+};
+
 window.selectPickerItem = function(id, type) {
     if (type === 'supplier') { expSupplier.value = id; expSupplier.dispatchEvent(new Event('change', { bubbles: true })); }
     else expCategory.value = id;

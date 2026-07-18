@@ -98,7 +98,13 @@ th { color: var(--text-secondary); font-weight: 600; position: sticky; top: 0; b
     transition: var(--transition);
 }
 .picker-btn:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
-.input-icon-wrapper .form-control { padding-right: 2.6rem; padding-left: 2.6rem; }
+
+.picker-btn-below {
+    position: static; transform: none; width: auto; height: auto;
+    margin-top: 0.4rem; padding: 0.35rem 0.7rem; font-size: 0.78rem;
+    border-radius: 8px; display: inline-flex; gap: 0.35rem;
+}
+.input-icon-wrapper .form-control { padding-right: 2.6rem; }
 
 .picker-item {
     display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem;
