@@ -55,3 +55,9 @@ ALTER TABLE suppliers DISABLE ROW LEVEL SECURITY;
 ALTER TABLE delivery_companies DISABLE ROW LEVEL SECURITY;
 ALTER TABLE categories DISABLE ROW LEVEL SECURITY;
 ALTER TABLE expenses DISABLE ROW LEVEL SECURITY;
+
+-- تفعيل البث المباشر (Realtime) للمزامنة التلقائية الفورية بين الأجهزة
+ALTER PUBLICATION supabase_realtime ADD TABLE suppliers;
+ALTER PUBLICATION supabase_realtime ADD TABLE delivery_companies;
+ALTER PUBLICATION supabase_realtime ADD TABLE categories;
+ALTER PUBLICATION supabase_realtime ADD TABLE expenses;

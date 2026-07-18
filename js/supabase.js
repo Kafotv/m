@@ -144,10 +144,23 @@ function startRealtimeSync() {
         if (document.visibilityState === 'visible' && window.supabaseClient) syncWithSupabaseBackground();
     });
     window._syncInterval = setInterval(() => { if (window.supabaseClient) syncWithSupabaseBackground(); }, 10000);
+    if (window.supabaseClient) setupRealtimeSubscriptions();
+}
+
+function setupRealtimeSubscriptions() {
+    if (window._realtimeChannel) window.supabaseClient.removeChannel(window._realtimeChannel);
+    const tables = ['expenses', 'suppliers', 'delivery_companies', 'categories'];
+    const channel = window.supabaseClient.channel('db-changes');
+    tables.forEach(table => {
+        channel.on('postgres_changes', { event: '*', schema: 'public', table }, () => syncWithSupabaseBackground());
+    });
+    channel.subscribe().catch(() => {}); // fail silently if realtime not enabled
+    window._realtimeChannel = channel;
 }
 
 function stopRealtimeSync() {
     if (window._syncInterval) { clearInterval(window._syncInterval); window._syncInterval = null; }
+    if (window._realtimeChannel && window.supabaseClient) { window.supabaseClient.removeChannel(window._realtimeChannel); window._realtimeChannel = null; }
 }
 
 async function loadState() {
