@@ -26,9 +26,9 @@
     box-shadow: 0 4px 10px rgba(79,70,229,0.25); flex-shrink: 0;
 }
 
-.supplier-info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
-.supplier-name { font-weight: 700; font-size: 1.05rem; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.supplier-phone { font-size: 0.8rem; color: var(--text-secondary); text-decoration: none; display: flex; align-items: center; gap: 4px; transition: var(--transition); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.supplier-info { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.supplier-name { font-weight: 700; font-size: 1.05rem; color: var(--text-primary); }
+.supplier-phone { font-size: 0.8rem; color: var(--text-secondary); text-decoration: none; display: flex; align-items: center; gap: 4px; transition: var(--transition); }
 .supplier-phone:hover { color: var(--primary); }
 
 .delete-sup-btn {
@@ -62,3 +62,7 @@
 
 .supplier-card-actions { display: flex; gap: 8px; width: 100%; }
 .supplier-card-actions .btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; }
+
+.supplier-card-top-actions {
+    position: absolute; top: 10px; left: 10px; display: flex; gap: 4px; z-index: 2;
+}
