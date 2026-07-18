@@ -154,7 +154,7 @@ function setupRealtimeSubscriptions() {
     tables.forEach(table => {
         channel.on('postgres_changes', { event: '*', schema: 'public', table }, () => syncWithSupabaseBackground());
     });
-    channel.subscribe().catch(() => {}); // fail silently if realtime not enabled
+    channel.subscribe((status, err) => { if (err) console.error('Realtime error:', err); });
     window._realtimeChannel = channel;
 }
 
