@@ -1,14 +1,14 @@
 .suppliers-panel, .delivery-panel { display: none; width: 100%; }
 
 .suppliers-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.25rem; margin-top: 1.5rem;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem; margin-top: 1.5rem;
 }
 
 .supplier-card {
-    display: flex; flex-direction: column; gap: 1rem;
-    padding: 1.25rem; background: var(--bg-card); border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06); border: 1.5px solid var(--border-card);
+    display: flex; flex-direction: column; gap: 0.75rem;
+    padding: 1rem; background: var(--bg-card); border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1.5px solid var(--border-card);
     position: relative; overflow: hidden; cursor: pointer;
 }
 
